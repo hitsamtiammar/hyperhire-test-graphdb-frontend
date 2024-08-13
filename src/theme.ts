@@ -1,6 +1,11 @@
 import { createTheme } from "@mui/material"
 
 export default createTheme({
+    typography: {
+        button: {
+          textTransform: 'none'
+        }
+      },
     palette: {
         primary: {
             main: '#363740'

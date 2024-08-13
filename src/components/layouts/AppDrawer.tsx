@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { Toolbar, Box, Avatar, Typography, List, ListItem as ListItemMui, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import Drawer from '@mui/material/Drawer'
-import React from 'react'
 import { FileUpload, Settings } from '@mui/icons-material'
 import ArticleIcon from '@mui/icons-material/Article';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
@@ -13,7 +12,7 @@ const ListItem = styled(ListItemMui)(() => ({
     height: 56,
   }))
 
-const drawerWidth = 255;
+export const drawerWidth = '255px';
 
 const DRAWER_LIST = [
     {
@@ -56,6 +55,7 @@ const DRAWER_LIST = [
 export default function AppDrawer() {
   return (
     <Drawer
+    open={true}
     sx={{
       width: drawerWidth,
       flexShrink: 0,
@@ -67,7 +67,7 @@ export default function AppDrawer() {
         color: 'secondary.main'
       },
     }}
-    variant="permanent"
+    variant="persistent"
     anchor="left"
   >
     <Toolbar sx={{ marginTop: '21px', marginBottom: '50px' }}>
