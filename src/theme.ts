@@ -16,7 +16,8 @@ export default createTheme({
             contrastText: '#373F41'
         },
         info: {
-            main: '#25282B'
+            main: '#25282B',
+            light: '#52575C'
         },
         warning: {
             main: '#737B7D'
