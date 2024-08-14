@@ -6,7 +6,8 @@ const ContainerGrid = styled(Grid)(() => ({
     // paddingRight: '28px',
     marginTop: '41px',
     paddingLeft: '58px',
-    paddingRight: '40px'
+    paddingRight: '40px',
+    marginBottom: '48px'
 }))
 
 export default function Header() {

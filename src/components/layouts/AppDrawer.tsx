@@ -7,6 +7,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import LayersIcon from '@mui/icons-material/Layers';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import { useNavigate } from 'react-router-dom';
 
 const ListItem = styled(ListItemMui)(() => ({
     height: 56,
@@ -18,12 +19,14 @@ const DRAWER_LIST = [
     {
       id: '1',
       text: '설정',
-      Icon: Settings
+      Icon: Settings,
+      path: '/'
     },
     {
       id: '2',
       text: '데이터 업로드',
-      Icon: FileUpload
+      Icon: FileUpload,
+       path: '/file-upload'
     },
     {
       id: '3',
@@ -53,6 +56,7 @@ const DRAWER_LIST = [
   ]
 
 export default function AppDrawer() {
+    const navigate = useNavigate()
   return (
     <Drawer
     open={true}
@@ -81,7 +85,7 @@ export default function AppDrawer() {
         const Icon = item.Icon 
         return (
       <ListItem key={item.id} disablePadding>
-        <ListItemButton >
+        <ListItemButton onClick={() => item.path && navigate(item.path)} >
             <ListItemIcon>
               <Icon color="secondary" />
             </ListItemIcon>
