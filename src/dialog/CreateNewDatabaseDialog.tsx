@@ -4,27 +4,34 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { styled, Grid, TextField, Typography, Button } from '@mui/material';
+import { Grid, Typography, Button } from '@mui/material';
+import { useForm } from 'react-hook-form'
+import { Title, Heading, ModalTextField } from '@/components/common/modal';
 
 export interface CreateNewDatabaseProps{
     handleClose: (value: boolean) => void,
-    open: boolean 
+    open: boolean;
+    onSubmit: (data: object) => void
 }
 
-const Title = styled(Typography)({
-  fontSize: '16px',
-  width: '20%',
-  fontFamily: 'Mulish',
-  fontWeight: 500
-});
 
-const Heading = styled(Typography)({
-  fontSize: '16px',
-  fontFamily:"Mulish",
-  fontWeight: 700
-})
+export default function CreateNewDatabase({ handleClose, open, onSubmit: onSubmitProps }: CreateNewDatabaseProps) {
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues: { 
+        port: '',
+        minimumMemory: '',  
+        maximumMemory: ''
+      },
+  })
 
-export default function CreateNewDatabase({ handleClose, open }: CreateNewDatabaseProps) {
+  const { register, formState: { errors }, handleSubmit } = methods
+
+  function onSubmit(data: object){
+    console.log('data', data)
+    onSubmitProps(data)
+  }
+
   return (
     <Dialog  maxWidth="md" onClose={handleClose} open={open}>
         <DialogTitle fontWeight={700} color="secondary.contrastText" >Create a new database</DialogTitle>
@@ -41,22 +48,49 @@ export default function CreateNewDatabase({ handleClose, open }: CreateNewDataba
               </Grid>
               <Grid item container alignItems="center" direction="row">
                 <Title color="info" >Port</Title>
-                <TextField sx={{ marginBottom: '10px', borderWidth: '1px', borderColor: 'secondary.main' }} />
+                <ModalTextField 
+                {...register('port',{
+                    required: {
+                      value: true,
+                      message: 'Port must be filled'
+                    },
+                    valueAsNumber: true
+                  })} helperText={errors.port?.message} error={!!errors.port?.message}  type="number" />
               </Grid>
           </Grid>
           <Grid marginTop={4} container direction="column">
               <Heading marginBottom={2} color="info">Optional</Heading>
               <Grid item container alignItems="center" direction="row">
                 <Title color="info" sx={{ width: '40%' }}>Minimum Memory Usage(-Xms)</Title>
-                <TextField type="number" sx={{ marginBottom: '10px', borderWidth: '1px', borderColor: 'secondary.main' }} />
+                <ModalTextField 
+                {...register('minimumMemory',{
+                  required: {
+                    value: false,
+                    message: 'Minimum Memory must be filled'
+                  },
+                  valueAsNumber: true
+                })}
+                helperText={errors.minimumMemory?.message}
+                error={!!errors.minimumMemory?.message}
+                type="number"  />
               </Grid>
               <Grid item container alignItems="center" direction="row">
                 <Title color="info" sx={{ width: '40%' }}>Maximum Memory Usage(-Xmx)</Title>
-                <TextField type="number" sx={{  borderWidth: '1px', borderColor: 'secondary.main' }} />
+                <ModalTextField 
+                {...register('maximumMemory',{
+                  required: {
+                    value: false,
+                    message: ''
+                  },
+                  valueAsNumber: true
+                })}   
+                helperText={errors.maximumMemory?.message}
+                error={!!errors.maximumMemory?.message}           
+                type="number" />
               </Grid>
           </Grid>
           <DialogActions sx={{ justifyContent: 'center' }} >
-            <Button sx={{ width: '246px' }} variant="contained" color="blue">Create Database</Button>
+            <Button onClick={handleSubmit(onSubmit)} sx={{ width: '246px' }} variant="contained" color="blue">Create Database</Button>
           </DialogActions>
         </DialogContent>
     </Dialog>

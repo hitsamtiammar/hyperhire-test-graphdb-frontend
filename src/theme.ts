@@ -18,7 +18,7 @@ export default createTheme({
         info: {
             main: '#25282B',
             light: '#52575C'
-        },
+        },    
         warning: {
             main: '#737B7D'
         },
