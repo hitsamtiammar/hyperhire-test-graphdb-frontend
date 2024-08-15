@@ -30,7 +30,8 @@ export default createTheme({
         },
         blue: {
             main: '#007EFF',
-            contrastText: 'white'
+            contrastText: 'white',
+            light: 'rgba(0, 126, 255, 0.1)'
         }
     }
 })

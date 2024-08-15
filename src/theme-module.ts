@@ -17,4 +17,9 @@ declare module "@mui/material" {
         gray: true;
         blue: true;
     }
-  }
+
+    interface IconButtonPropsColorOverrides{
+      gray: true;
+      blue: true;
+    }
+}

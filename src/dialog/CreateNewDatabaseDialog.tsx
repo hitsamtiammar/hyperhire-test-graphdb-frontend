@@ -1,4 +1,3 @@
-import React from 'react'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -7,6 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Grid, Typography, Button } from '@mui/material';
 import { useForm } from 'react-hook-form'
 import { Title, Heading, ModalTextField } from '@/components/common/modal';
+import { CreateDbRequest } from '@/api';
 
 export interface CreateNewDatabaseProps{
     handleClose: (value: boolean) => void,
@@ -16,18 +16,18 @@ export interface CreateNewDatabaseProps{
 
 
 export default function CreateNewDatabase({ handleClose, open, onSubmit: onSubmitProps }: CreateNewDatabaseProps) {
-  const methods = useForm({
+  const methods = useForm<CreateDbRequest>({
     mode: 'onBlur',
     defaultValues: { 
-        port: '',
-        minimumMemory: '',  
-        maximumMemory: ''
+        port: 0,
+        minimumUsage: 0,  
+        maximumUsage: 0
       },
   })
 
   const { register, formState: { errors }, handleSubmit } = methods
 
-  function onSubmit(data: object){
+  function onSubmit(data: CreateDbRequest){
     console.log('data', data)
     onSubmitProps(data)
   }
@@ -63,29 +63,29 @@ export default function CreateNewDatabase({ handleClose, open, onSubmit: onSubmi
               <Grid item container alignItems="center" direction="row">
                 <Title color="info" sx={{ width: '40%' }}>Minimum Memory Usage(-Xms)</Title>
                 <ModalTextField 
-                {...register('minimumMemory',{
+                {...register('minimumUsage',{
                   required: {
                     value: false,
                     message: 'Minimum Memory must be filled'
                   },
                   valueAsNumber: true
                 })}
-                helperText={errors.minimumMemory?.message}
-                error={!!errors.minimumMemory?.message}
+                helperText={errors.minimumUsage?.message}
+                error={!!errors.minimumUsage?.message}
                 type="number"  />
               </Grid>
               <Grid item container alignItems="center" direction="row">
                 <Title color="info" sx={{ width: '40%' }}>Maximum Memory Usage(-Xmx)</Title>
                 <ModalTextField 
-                {...register('maximumMemory',{
+                {...register('maximumUsage',{
                   required: {
                     value: false,
                     message: ''
                   },
                   valueAsNumber: true
                 })}   
-                helperText={errors.maximumMemory?.message}
-                error={!!errors.maximumMemory?.message}           
+                helperText={errors.maximumUsage?.message}
+                error={!!errors.maximumUsage?.message}           
                 type="number" />
               </Grid>
           </Grid>

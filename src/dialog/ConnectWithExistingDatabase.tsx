@@ -11,22 +11,27 @@ import { Title, Heading, ModalTextField } from '@/components/common/modal';
 export interface ConnectWithExistingDatabaseProps{
     handleClose: (value: boolean) => void;
     open: boolean;
-    onSubmit: (data: object) => void
+    onSubmit: (data: ConnectDbData) => void
+    loading: boolean
 }
 
+export interface ConnectDbData{
+  ipAddress: string;
+  port: number
+}
 
-export default function ConnectWithExistingDatabase({ handleClose, open, onSubmit: onSubmitProps }: ConnectWithExistingDatabaseProps) {
-    const methods = useForm({
+export default function ConnectWithExistingDatabase({ loading = false, handleClose, open, onSubmit: onSubmitProps }: ConnectWithExistingDatabaseProps) {
+    const methods = useForm<ConnectDbData>({
         mode: 'onBlur',
         defaultValues: { 
-            port: '',
-            ipAddress: '',  
+            port: 0,
+            ipAddress: document.location.protocol + '//' + document.location.hostname,  
           },
       })
     
       const { register, formState: { errors }, handleSubmit } = methods
     
-      function onSubmit(data: object){
+      function onSubmit(data: ConnectDbData){
         console.log('data', data)
         onSubmitProps(data)
         
@@ -53,6 +58,7 @@ export default function ConnectWithExistingDatabase({ handleClose, open, onSubmi
                       message: 'ipAddress must be filled'
                     },
                   })} 
+                  disabled={loading}
                   helperText={errors.ipAddress?.message}
                   error={!!errors.ipAddress?.message}
                     sx={{ flex: 1 }}
@@ -66,11 +72,11 @@ export default function ConnectWithExistingDatabase({ handleClose, open, onSubmi
                       message: 'Port must be filled'
                     },
                     valueAsNumber: true
-                  })} helperText={errors.port?.message} error={!!errors.port?.message}  type="number" />
+                  })} disabled={loading} helperText={errors.port?.message} error={!!errors.port?.message}  type="number" />
               </Grid>
           </Grid>
           <DialogActions sx={{ justifyContent: 'center' }} >
-            <Button onClick={handleSubmit(onSubmit)} sx={{ width: '246px' }} variant="contained" color="blue">Connect Database</Button>
+            <Button disabled={loading} onClick={handleSubmit(onSubmit)} sx={{ width: '246px' }} variant="contained" color="blue">Connect Database</Button>
           </DialogActions>
         </DialogContent>
     </Dialog>
