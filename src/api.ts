@@ -14,6 +14,7 @@ export interface StatusList {
     queryStartCount: number
     runningQueriesCount: number
     queryDoneCount: number
+    scheme: string
 }
 
 export interface Namespace {
@@ -25,7 +26,12 @@ export interface CreateDbRequest {
     port: number
     minimumUsage: number
     maximumUsage: number
-  }
+}
+
+export interface CreateNamespaceRequest{
+    url: string;
+    name: string
+}
 
 export const connectToDatabase = async({ port, url }: { port: number, url: string }) => {
     const response = await fetch(`${BASE_URL}/connect`, {
@@ -43,6 +49,29 @@ export const createDatabase = async(payload: CreateDbRequest) => {
     const response = await fetch(`${BASE_URL}/create-database`, {
         method: 'POST',
         body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    const data = await response.json()
+    return data;
+}
+
+export const createNamespace = async(payload: CreateNamespaceRequest) => {
+    const response = await fetch(`${BASE_URL}/create-namespace`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    const data = await response.text()
+    return data;
+}
+
+export const getNamespace = async(url: string) => {
+    const response = await fetch(`${BASE_URL}/get-namespace?url=${url}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }

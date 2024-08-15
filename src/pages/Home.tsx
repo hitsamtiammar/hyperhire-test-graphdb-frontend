@@ -1,10 +1,11 @@
 import { Box, Button, Grid, IconButton, Paper, Typography, styled } from '@mui/material'
 import HeadingText from '@/components/common/HeadingText';
-import CreateNewDatabaseDialog from '@/dialog/CreateNewDatabaseDialog';
+import CreateNewDatabaseDialog, { CreateNewDatabaseProps } from '@/dialog/CreateNewDatabaseDialog';
 import ConnectWithExistingDatabase, { ConnectDbData } from '@/dialog/ConnectWithExistingDatabase';
 import { Check, Close } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import { connectToDatabase, createDatabase, CreateDbRequest, Namespace, StatusList } from '@/api';
+import CreateNewNamespace, { CreateNewNamespaceRequest } from '@/dialog/CreateNewNamespace';
+import { connectToDatabase, createDatabase, CreateDbRequest, createNamespace, getNamespace, Namespace, StatusList } from '@/api';
      
 const InfoBox = styled(Paper)(() => ({
     marginTop: '40px', height: '200px', marginRight: '48px',
@@ -21,11 +22,10 @@ const GridRow = styled(Grid)(() => ({
 
 }))
 
-console.log('api url: ', import.meta.env.VITE_API_ENDPOINT)
-
 export default function Home() {
     const [openCreate, setOpenCreate] = useState(false)
     const [openExisting, setOpenExisting] = useState(false)
+    const [openNamespace, setOpenNamespace] = useState(false)
     const [infoData, setInfoData] = useState<StatusList>(null)
     const [namespaces, setNameSpaces] = useState<Namespace[]>([])
     const [loading, setLoading] = useState(false)
@@ -82,6 +82,27 @@ export default function Home() {
             alert('Failed to connect')
         }finally{
             setOpenExisting(false)
+            setLoading(false)
+        }
+    }
+
+    async function onSubmitNamespace(data: CreateNewNamespaceRequest){
+        try{
+            setLoading(true)
+            const url = `${infoData.scheme}://${infoData.hostname}:${infoData.port}`
+            await createNamespace({
+                name: data.name,
+                url: url
+            })
+            const namespaceResponse = await getNamespace(url)
+            const newNamespaces = namespaceResponse.namespace
+            setNameSpaces(newNamespaces)
+
+        }catch(err){
+            console.log('ERR',{ err })
+            alert('Failed to create new namespace')
+        }finally{
+            setOpenNamespace(false)
             setLoading(false)
         }
     }
@@ -187,7 +208,7 @@ export default function Home() {
             <InfoBox elevation={1}>
                 {renderInfoBox()}
             </InfoBox>
-            <HeadingText marginTop="43px" text="Repository" />
+            <HeadingText onClick={() => setOpenNamespace(true)} marginTop="43px" text="Repository" />
             <Grid paddingRight="48px" container direction="column">
                 {namespaces.map(item => (
                     <GridRow key={item.title} alignItems="center" container direction="row">
@@ -208,6 +229,7 @@ export default function Home() {
                     </GridRow>
                 ))}
             </Grid>
+            <CreateNewNamespace loading={loading} onSubmit={onSubmitNamespace} handleClose={() => setOpenNamespace(false)} open={openNamespace} />
             <CreateNewDatabaseDialog onSubmit={onSubmitCreateNew} open={openCreate} handleClose={() => setOpenCreate(false)} />
             <ConnectWithExistingDatabase loading={loading} onSubmit={onSubmitConnect} open={openExisting} handleClose={() => setOpenExisting(false)} />
         </Grid>

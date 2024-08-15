@@ -11,7 +11,7 @@ import { CreateDbRequest } from '@/api';
 export interface CreateNewDatabaseProps{
     handleClose: (value: boolean) => void,
     open: boolean;
-    onSubmit: (data: object) => void
+    onSubmit: (data: CreateDbRequest) => void
 }
 
 
