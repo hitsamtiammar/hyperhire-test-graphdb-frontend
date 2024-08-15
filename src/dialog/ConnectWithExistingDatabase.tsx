@@ -1,4 +1,3 @@
-import React from 'react'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -20,12 +19,16 @@ export interface ConnectDbData{
   port: number
 }
 
+const DEFAULT_URL = import.meta.env.VITE_DEFAULT_URL
+
+console.log('VITE_DEFAULT_URL', { DEFAULT_URL })
+
 export default function ConnectWithExistingDatabase({ loading = false, handleClose, open, onSubmit: onSubmitProps }: ConnectWithExistingDatabaseProps) {
     const methods = useForm<ConnectDbData>({
         mode: 'onBlur',
         defaultValues: { 
             port: 0,
-            ipAddress: document.location.protocol + '//' + document.location.hostname,  
+            ipAddress: DEFAULT_URL,  
           },
       })
     

@@ -2,7 +2,7 @@ import { Namespace, StatusList } from '@/api'
 import { useEffect, useState } from 'react'
 
 export default function useServerInfo() {
-    const [infoData, setInfoData] = useState<StatusList>(null)
+    const [infoData, setInfoData] = useState<StatusList>()
     const [namespaces, setNameSpaces] = useState<Namespace[]>([])
     useEffect(() => {
         const cachedData = localStorage.getItem('currServer')

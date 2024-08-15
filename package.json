@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
+    "@types/node": "^22.3.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -29,8 +30,13 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
-    "typescript": "^5.5.3",
+    "ts-node": "^10.9.2",
+    "ts-patch": "^3.2.1",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.0",
+    "typescript-transform-paths": "^3.4.10",
     "vite": "^5.4.0"
   }
 }

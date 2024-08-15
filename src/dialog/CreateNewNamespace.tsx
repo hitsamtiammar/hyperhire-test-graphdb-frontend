@@ -1,10 +1,9 @@
-import React from 'react'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useForm } from 'react-hook-form'
-import { Grid, Typography, Button } from '@mui/material';
+import { Grid, Button } from '@mui/material';
 import { Title, ModalTextField } from '@/components/common/modal';
 
 export interface ConnectWithExistingDatabaseProps{

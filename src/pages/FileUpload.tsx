@@ -15,12 +15,12 @@ const InfoBox = styled(Paper)(() => ({
     width: '513px'
 }))
 
-const ImportButton = styled(Button)(({ theme: { palette: { blue } } }) => ({
+const ImportButton = styled(Button)(() => ({
     fontFamily: 'Mulish', 
     width: '97px',
     height: '42px',
     borderRadius: '8px',
-    backgroundColor: blue['main'],
+    backgroundColor: '#007EFF',
 }))
 
 const GridRow = styled(Grid)(() => ({ 

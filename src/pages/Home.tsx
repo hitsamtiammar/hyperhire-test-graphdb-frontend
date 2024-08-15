@@ -1,6 +1,6 @@
 import { Box, Button, Grid, IconButton, Paper, Typography, styled } from '@mui/material'
 import HeadingText from '@/components/common/HeadingText';
-import CreateNewDatabaseDialog, { CreateNewDatabaseProps } from '@/dialog/CreateNewDatabaseDialog';
+import CreateNewDatabaseDialog from '@/dialog/CreateNewDatabaseDialog';
 import ConnectWithExistingDatabase, { ConnectDbData } from '@/dialog/ConnectWithExistingDatabase';
 import { Check, Close } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
@@ -27,7 +27,7 @@ export default function Home() {
     const [openCreate, setOpenCreate] = useState(false)
     const [openExisting, setOpenExisting] = useState(false)
     const [openNamespace, setOpenNamespace] = useState(false)
-    const [infoData, setInfoData] = useState<StatusList>(null)
+    const [infoData, setInfoData] = useState<StatusList>()
     const [namespaces, setNameSpaces] = useState<Namespace[]>([])
     const [loading, setLoading] = useState(false)
     const [currNamespace, setCurrNamespace] = useState(localStorage.getItem('currNamespace') || 'kb')
@@ -88,7 +88,7 @@ export default function Home() {
     async function onSubmitNamespace(data: CreateNewNamespaceRequest){
         try{
             setLoading(true)
-            const url = `${infoData.scheme}://${infoData.hostname}:${infoData.port}`
+            const url = `${infoData?.scheme}://${infoData?.hostname}:${infoData?.port}`
             await createNamespace({
                 name: data.name,
                 url: url
@@ -129,15 +129,15 @@ export default function Home() {
                     <Grid container spacing={2} direction="column" xs={4} item>
                         <Grid justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >Database Type</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData.databasetype}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData?.databasetype}</Typography>
                         </Grid>
                         <Grid  justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >IP Address</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.hostname}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.hostname}</Typography>
                         </Grid>
                         <Grid  justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >Port</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.port}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.port}</Typography>
                         </Grid>
                         <Grid  justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >Repositories</Typography>
@@ -147,45 +147,45 @@ export default function Home() {
                     <Grid spacing={1} container direction="column" xs={4} item>
                         <Grid justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >runningQueriesCount</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.runningQueriesCount}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.runningQueriesCount}</Typography>
                         </Grid>
                         <Grid  justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >queryStartCount</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.queryStartCount}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.queryStartCount}</Typography>
                         </Grid>
                         <Grid  justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >queryErrorCount</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.queryErrorCount}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.queryErrorCount}</Typography>
                         </Grid>
                         <Grid justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >queryDoneCount</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.queryDoneCount}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.queryDoneCount}</Typography>
                         </Grid>
                         <Grid justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >queryPerSecond</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.queryPerSecond}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.queryPerSecond}</Typography>
                         </Grid>
                     </Grid>
                     <Grid container spacing={1} direction="column" xs={4} item>
                         <Grid justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >operatorTasksPerQuery</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData.operatorTasksPerQuery}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData?.operatorTasksPerQuery}</Typography>
                         </Grid>
                         <Grid  justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >operatorStartCount</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData.operatorStartCount}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData?.operatorStartCount}</Typography>
                         </Grid>
                         <Grid  justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >operatorHaltCount</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.operatorHaltCount}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.operatorHaltCount}</Typography>
                         </Grid>
                         <Grid justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >operatorActiveCount</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData.operatorActiveCount}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px">{infoData?.operatorActiveCount}</Typography>
                         </Grid>
                         <Grid justifyContent="space-between" container direction="row" item>
                             <Typography marginRight="38px" color="info" fontFamily="Mulish" fontWeight={500} fontSize="16px" >deadlineQueueSize</Typography>
-                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData.deadlineQueueSize}</Typography>
+                            <Typography color="info.light" fontFamily="Mulish" fontWeight={500} fontSize="16px" >{infoData?.deadlineQueueSize}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -199,7 +199,7 @@ export default function Home() {
         if(isConfirm){
             try{
                 setLoading(true)
-                const url = `${infoData.scheme}://${infoData.hostname}:${infoData.port}`
+                const url = `${infoData?.scheme}://${infoData?.hostname}:${infoData?.port}`
                 await deleteNamespace({
                     url: url,
                     name
