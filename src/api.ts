@@ -69,6 +69,19 @@ export const createNamespace = async(payload: CreateNamespaceRequest) => {
     return data;
 }
 
+
+export const deleteNamespace = async(payload: CreateNamespaceRequest) => {
+    const response = await fetch(`${BASE_URL}/delete-namespace`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    const data = await response.text()
+    return data;
+}
+
 export const getNamespace = async(url: string) => {
     const response = await fetch(`${BASE_URL}/get-namespace?url=${url}`, {
         method: 'GET',

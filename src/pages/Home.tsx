@@ -5,7 +5,7 @@ import ConnectWithExistingDatabase, { ConnectDbData } from '@/dialog/ConnectWith
 import { Check, Close } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import CreateNewNamespace, { CreateNewNamespaceRequest } from '@/dialog/CreateNewNamespace';
-import { connectToDatabase, createDatabase, CreateDbRequest, createNamespace, getNamespace, Namespace, StatusList } from '@/api';
+import { connectToDatabase, createDatabase, CreateDbRequest, createNamespace, deleteNamespace, getNamespace, Namespace, StatusList } from '@/api';
      
 const InfoBox = styled(Paper)(() => ({
     marginTop: '40px', height: '200px', marginRight: '48px',
@@ -115,7 +115,7 @@ export default function Home() {
                   <Typography>위의 버튼을 눌러 새 데이터베이스를 생성하거나, 기존의 데이터베이스와 연결하세요.</Typography>
                 </>
             )
-        }
+    }
         return (
             <Grid container direction="column">
                 <Grid container direction="row">
@@ -194,6 +194,28 @@ export default function Home() {
         )
     }
 
+    async function onDeleteNamespace(name: string){
+        console.log('name')
+        const isConfirm = confirm(`Are you sure want to delete namespace ${name}`)
+        if(isConfirm){
+            try{
+                setLoading(true)
+                const url = `${infoData.scheme}://${infoData.hostname}:${infoData.port}`
+                await deleteNamespace({
+                    url: url,
+                    name
+                })
+                const namespaceResponse = await getNamespace(url)
+                const newNamespaces = namespaceResponse.namespace
+                setNameSpaces(newNamespaces)
+            }catch(err){
+                console.log('delete', err)
+            }finally{
+                setLoading(false)
+            }
+        }
+    }
+
     function onChoose(item: Namespace){
         setCurrNamespace(item.title)
         localStorage.setItem('currNamespace',item.title)
@@ -222,7 +244,7 @@ export default function Home() {
                             <IconButton onClick={() => onChoose(item)} sx={{ backgroundColor: 'blue.light' }}>
                                 <Check />
                             </IconButton>
-                            <IconButton sx={{ backgroundColor: 'blue.light' }}>
+                            <IconButton onClick={() => onDeleteNamespace(item.title)} sx={{ backgroundColor: 'blue.light' }}>
                                 <Close />
                             </IconButton>
                         </Grid>
