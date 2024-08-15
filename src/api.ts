@@ -33,6 +33,12 @@ export interface CreateNamespaceRequest{
     name: string
 }
 
+export interface FileUploadRequest{
+    files: File[]
+    url: string;
+    namespace: string
+}
+
 export const connectToDatabase = async({ port, url }: { port: number, url: string }) => {
     const response = await fetch(`${BASE_URL}/connect`, {
         method: 'POST',
@@ -52,6 +58,23 @@ export const createDatabase = async(payload: CreateDbRequest) => {
         headers: {
             'Content-Type': 'application/json'
         }
+    })
+    const data = await response.json()
+    return data;
+}
+
+export const uploadTtl = async({ files, namespace, url }: FileUploadRequest) => {
+    const formData = new FormData()
+    formData.append('url', url)
+    formData.append('namespace', namespace)
+
+    files.forEach((file, index) => {
+        formData.append(`file_${index + 1}`, file)
+    })
+
+    const response = await fetch(`${BASE_URL}/upload-ttl`, {
+        method: 'post',
+        body: formData,
     })
     const data = await response.json()
     return data;

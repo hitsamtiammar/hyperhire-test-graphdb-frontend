@@ -6,7 +6,8 @@ import { Check, Close } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import CreateNewNamespace, { CreateNewNamespaceRequest } from '@/dialog/CreateNewNamespace';
 import { connectToDatabase, createDatabase, CreateDbRequest, createNamespace, deleteNamespace, getNamespace, Namespace, StatusList } from '@/api';
-     
+import useServerInfo from '@/hooks/useServerInfo';
+
 const InfoBox = styled(Paper)(() => ({
     marginTop: '40px', height: '200px', marginRight: '48px',
     padding: '19px 24px'
@@ -31,14 +32,12 @@ export default function Home() {
     const [loading, setLoading] = useState(false)
     const [currNamespace, setCurrNamespace] = useState(localStorage.getItem('currNamespace') || 'kb')
 
+    const { infoData: infoDataStored, namespaces: nameSpaceStored } = useServerInfo()
+
     useEffect(() => {
-        const cachedData = localStorage.getItem('currServer')
-        if(cachedData){
-            const parsedData = JSON.parse(cachedData);
-            setInfoData(parsedData.infoData)
-            setNameSpaces(parsedData.namespaces)
-        }
-    }, [])
+        setInfoData(infoDataStored)
+        setNameSpaces(nameSpaceStored)
+    }, [infoDataStored, nameSpaceStored])
 
     async function onSubmitCreateNew(data: CreateDbRequest){
         console.log('submit create new', { data })
