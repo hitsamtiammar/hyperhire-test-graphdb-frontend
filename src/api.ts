@@ -26,6 +26,7 @@ export interface CreateDbRequest {
     port: number
     minimumUsage: number
     maximumUsage: number
+    url: string
 }
 
 export interface CreateNamespaceRequest{
@@ -52,14 +53,14 @@ export const connectToDatabase = async({ port, url }: { port: number, url: strin
 }
 
 export const createDatabase = async(payload: CreateDbRequest) => {
-    const response = await fetch(`${BASE_URL}/create-database`, {
+    const response = await fetch(`${BASE_URL}/create-database-redirection`, {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    const data = await response.json()
+    const data = await response.text()
     return data;
 }
 

@@ -14,6 +14,7 @@ export interface CreateNewDatabaseProps{
     onSubmit: (data: CreateDbRequest) => void
 }
 
+const DEFAULT_URL_NEW_DATABASE = import.meta.env.VITE_DEFAULT_CREATE_DATABASE
 
 export default function CreateNewDatabase({ handleClose, open, onSubmit: onSubmitProps }: CreateNewDatabaseProps) {
   const methods = useForm<CreateDbRequest>({
@@ -21,7 +22,8 @@ export default function CreateNewDatabase({ handleClose, open, onSubmit: onSubmi
     defaultValues: { 
         port: 0,
         minimumUsage: 0,  
-        maximumUsage: 0
+        maximumUsage: 0,
+        url: DEFAULT_URL_NEW_DATABASE
       },
   })
 
@@ -56,6 +58,16 @@ export default function CreateNewDatabase({ handleClose, open, onSubmit: onSubmi
                     },
                     valueAsNumber: true
                   })} helperText={errors.port?.message} error={!!errors.port?.message}  type="number" />
+              </Grid>
+              <Grid item container alignItems="center" direction="row">
+                <Title color="info" >Url</Title>
+                <ModalTextField 
+                {...register('url',{
+                    required: {
+                      value: true,
+                      message: 'url must be filled'
+                    },
+                  })} helperText={errors.url?.message} error={!!errors.url?.message}  />
               </Grid>
           </Grid>
           <Grid marginTop={4} container direction="column">

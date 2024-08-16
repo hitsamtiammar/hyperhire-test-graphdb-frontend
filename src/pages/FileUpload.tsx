@@ -42,6 +42,8 @@ export default function FileUpload() {
     const { infoData } = useServerInfo()
     const [loading, setLoading] = useState(false)
 
+     const currNamespace = localStorage.getItem('currNamespace') || 'kb'
+
      const url = infoData ? `${infoData.scheme}://${infoData.hostname}:${infoData.port}` : ''
 
     function formatFileSize(file: File): string {
@@ -87,8 +89,6 @@ export default function FileUpload() {
     }
 
     async function uploadFiles(files: File[]){
-        const currNamespace = localStorage.getItem('currNamespace') || 'kb'
-
         try{
             setLoading(true)
             await uploadTtl({
@@ -131,6 +131,8 @@ export default function FileUpload() {
                     지원하고, 여러 파일의 선택이 가능합니다.</Typography>
                 </Grid>
             </InfoBox>
+            <p>Current URl: {url}</p>
+            <p>Current Namespace: {currNamespace}</p>
             <Grid marginTop="29px" paddingRight="59px" container item>
                 <Grid container width="100%">
                     <Grid xs={1} item>

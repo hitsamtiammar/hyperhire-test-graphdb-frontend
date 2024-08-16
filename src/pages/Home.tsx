@@ -32,7 +32,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false)
     const [currNamespace, setCurrNamespace] = useState(localStorage.getItem('currNamespace') || 'kb')
 
-    const { infoData: infoDataStored, namespaces: nameSpaceStored } = useServerInfo()
+    const { infoData: infoDataStored, namespaces: nameSpaceStored, rehydrateData } = useServerInfo()
 
     useEffect(() => {
         setInfoData(infoDataStored)
@@ -44,7 +44,7 @@ export default function Home() {
         try{
             setLoading(true)
             const response = await createDatabase(data)
-            if(response.status !== 'Success'){
+            if(response !== 'Success'){
                 throw response;
             }
             alert('Successfully create new database, Wait for a while before the server is ready')
@@ -96,6 +96,7 @@ export default function Home() {
             const namespaceResponse = await getNamespace(url)
             const newNamespaces = namespaceResponse.namespace
             setNameSpaces(newNamespaces)
+            rehydrateData(newNamespaces)
 
         }catch(err){
             console.log('ERR',{ err })
@@ -207,6 +208,7 @@ export default function Home() {
                 const namespaceResponse = await getNamespace(url)
                 const newNamespaces = namespaceResponse.namespace
                 setNameSpaces(newNamespaces)
+                rehydrateData(newNamespaces)
             }catch(err){
                 console.log('delete', err)
             }finally{

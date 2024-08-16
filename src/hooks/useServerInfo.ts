@@ -12,6 +12,15 @@ export default function useServerInfo() {
             setNameSpaces(parsedData.namespaces)
         }
     }, [])
-    return { infoData, namespaces }
+
+    function rehydrateData(newNamespaces: Namespace[]){
+        const cachedData = localStorage.getItem('currServer')
+        if(cachedData){
+            const parsedData = JSON.parse(cachedData);
+            parsedData.namespaces = newNamespaces
+            localStorage.setItem('currServer', JSON.stringify(parsedData))
+        }
+    }
+    return { infoData, namespaces, rehydrateData }
 
 }
